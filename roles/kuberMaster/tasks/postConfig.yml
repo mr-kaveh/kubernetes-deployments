@@ -1,0 +1,9 @@
+---
+- name: creates config directory
+  file:
+    path: "{{ user_home }}"/.kube
+    state: directory
+
+- name: copy config file
+  copy:
+     

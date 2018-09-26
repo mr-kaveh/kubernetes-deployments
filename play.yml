@@ -1,0 +1,9 @@
+---
+- name: Setting up a kuberenets cluster with 2 nodes
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: kuberMaster
+       
+    
+
