@@ -1,3 +1,4 @@
 ---
 # vars file for kuberMaster
 user_home: "/home/foo"
+user_name: "foo"
