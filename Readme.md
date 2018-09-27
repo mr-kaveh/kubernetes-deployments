@@ -1,1 +1,1 @@
-Kubernetes Cluster master install and initialization on centos7
+Kubernetes Cluster master installation and initialization on centos7
