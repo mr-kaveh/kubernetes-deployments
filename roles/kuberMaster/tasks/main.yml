@@ -6,4 +6,9 @@
 - name: includes docker dependencies
   include_tasks: dockerDeps.yml
 
+- name: installs kubernetes
+  include_tasks: kubes.yml
+
+- name: condigures kubernetes to work with regular user
+  include_tasks: postConfig.yml
 
