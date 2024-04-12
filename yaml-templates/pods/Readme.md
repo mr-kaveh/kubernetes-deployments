@@ -11,6 +11,7 @@ In this configuration:
 . Two volumes are defined:
   - cache-volume is an emptyDir volume, meaning it's ephemeral and tied to the lifecycle of the pod.
   - data-volume is a persistent volume claim (PersistentVolumeClaim) named my-pvc, which will provide persistent storage.
+
 . The container mounts both volumes:
  - /cache from the cache-volume.
  -  /data from the data-volume.
