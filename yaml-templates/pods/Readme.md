@@ -3,7 +3,7 @@
 
 In this configuration:
 
-. We define a pod named my-pod.
+. We define a pod named my-pod
 . It contains one container named my-container, using the Nginx image as an example.
 . Two volumes are defined:
   - cache-volume is an emptyDir volume, meaning it's ephemeral and tied to the lifecycle of the pod.
