@@ -3,8 +3,11 @@
 
 In this configuration:
 
+
 . We define a pod named my-pod
+
 . It contains one container named my-container, using the Nginx image as an example.
+
 . Two volumes are defined:
   - cache-volume is an emptyDir volume, meaning it's ephemeral and tied to the lifecycle of the pod.
   - data-volume is a persistent volume claim (PersistentVolumeClaim) named my-pvc, which will provide persistent storage.
