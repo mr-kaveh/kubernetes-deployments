@@ -1,12 +1,13 @@
 name: Deploy Kubernetes on Comment
 
 on:
-  pull_request_target:
-    types: [edited]
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
-    if: contains(github.event.comment.body, 'deploy_k8s')
+    if: contains(github.event.head_commit.message, 'deploy-k8s')
     runs-on: ubuntu-latest
 
     steps:
