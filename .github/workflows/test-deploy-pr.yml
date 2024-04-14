@@ -2,7 +2,7 @@ name: Simple Action on Pull Request
 
 on:
   pull_request_target:
-    types: [edited]
+    types: [opened, edited]
 
 jobs:
   simple-deploy:
