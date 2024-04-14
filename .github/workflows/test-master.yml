@@ -3,7 +3,7 @@ name: Simple Action on Master Push
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   simple-job:
