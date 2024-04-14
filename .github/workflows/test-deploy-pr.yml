@@ -1,0 +1,17 @@
+name: Simple Action on Pull Request
+
+on:
+  pull_request_target:
+    types: [edited]
+
+jobs:
+  simple-deploy:
+    if: contains(github.event.comment.body, '/deploy')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Print message
+        run: echo "PR comment triggered me"
