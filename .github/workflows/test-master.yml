@@ -14,4 +14,4 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Print message
-        run: echo "Hello, world! This action ran on a push to the master branch."
+        run: echo "Hello, world! This action ran on a push to the master branch!"
