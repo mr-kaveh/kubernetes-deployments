@@ -3,8 +3,8 @@ name: Simple Action on Pull Request
 on:
   issue_comment:
     types: [created]
-  pull_request:
-    types: [opened]
+  #pull_request:
+  #  types: [opened]
 
 
 jobs:
