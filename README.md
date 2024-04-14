@@ -1,0 +1,1 @@
+[![Simple Action on Master Push](https://github.com/mr-kaveh/kubernetes-deployments/actions/workflows/test-master.yml/badge.svg)](https://github.com/mr-kaveh/kubernetes-deployments/actions/workflows/test-master.yml)
