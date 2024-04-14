@@ -1,8 +1,8 @@
 name: Deploy Kubernetes on Comment
 
 on:
-  #pull_request_target:
-  #  types: [edited]
+  pull_request_target:
+    types: [edited]
 
 jobs:
   deploy:
