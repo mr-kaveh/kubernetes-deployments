@@ -2,7 +2,7 @@ name: Simple Action on Pull Request
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
   pull_request:
     types: [opened]
   #github.event.issue.pull_request &&
