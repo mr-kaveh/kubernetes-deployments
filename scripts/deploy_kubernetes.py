@@ -1,5 +1,5 @@
 # Installs K8s cluster on a remote machine
-# ch
+# che
 
 import paramiko
 import time
