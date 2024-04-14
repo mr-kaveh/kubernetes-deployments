@@ -3,9 +3,6 @@ name: Simple Action on Pull Request
 on:
   issue_comment:
     types: [created, edited]
-  pull_request:
-    types: [closed, reopened]
-
 
 jobs:
   run_if:
