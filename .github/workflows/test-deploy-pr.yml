@@ -1,12 +1,12 @@
 name: Simple Action on Pull Request
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, edited]
 
 jobs:
   simple-deploy:
-    if: ${{ github.event.comment.body == 'deploy' }}
+    if: ${{ github.event_name == 'issue_comment' && contains(github.event.comment.body, 'deploy') }}
     runs-on: ubuntu-latest
 
     steps:
