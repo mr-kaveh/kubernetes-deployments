@@ -9,7 +9,7 @@ on:
 
 
 jobs:
-  simple-deploy:
+  run_if:
     if:  github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')
     runs-on: ubuntu-latest
 
