@@ -3,9 +3,9 @@ name: Simple Action on Pull Request
 on:
   issue_comment:
     types: [created]
-  pull_request:
-    types:
-      - closed
+  #pull_request:
+  #  types:
+  #    - closed
 
 jobs:
   simple-deploy:
