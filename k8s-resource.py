@@ -4,6 +4,14 @@ import yaml
 
 def generate_yaml(resource_kind):
     templates = {
+        "pod": {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {"name": "example-pod"},
+            "spec": {
+                "containers": [{"name": "example-container", "image": "nginx"}]
+            }
+        },
         "deployment": {
             "apiVersion": "apps/v1",
             "kind": "Deployment",
@@ -15,6 +23,27 @@ def generate_yaml(resource_kind):
                     "metadata": {"labels": {"app": "example"}},
                     "spec": {"containers": [{"name": "example-container", "image": "nginx"}]}
                 }
+            }
+        },
+        "statefulset": {
+            "apiVersion": "apps/v1",
+            "kind": "StatefulSet",
+            "metadata": {"name": "example-statefulset"},
+            "spec": {
+                "serviceName": "example-service",
+                "replicas": 2,
+                "selector": {"matchLabels": {"app": "example"}},
+                "template": {
+                    "metadata": {"labels": {"app": "example"}},
+                    "spec": {"containers": [{"name": "example-container", "image": "nginx", "volumeMounts": [{"name": "example-volume", "mountPath": "/data"}]}]}
+                },
+                "volumeClaimTemplates": [{
+                    "metadata": {"name": "example-volume"},
+                    "spec": {
+                        "accessModes": ["ReadWriteOnce"],
+                        "resources": {"requests": {"storage": "1Gi"}}
+                    }
+                }]
             }
         },
         "service": {
@@ -46,27 +75,6 @@ def generate_yaml(resource_kind):
                 "resources": {"requests": {"storage": "1Gi"}}
             }
         },
-        "statefulset": {
-            "apiVersion": "apps/v1",
-            "kind": "StatefulSet",
-            "metadata": {"name": "example-statefulset"},
-            "spec": {
-                "serviceName": "example-service",
-                "replicas": 2,
-                "selector": {"matchLabels": {"app": "example"}},
-                "template": {
-                    "metadata": {"labels": {"app": "example"}},
-                    "spec": {"containers": [{"name": "example-container", "image": "nginx", "volumeMounts": [{"name": "example-volume", "mountPath": "/data"}]}]}
-                },
-                "volumeClaimTemplates": [{
-                    "metadata": {"name": "example-volume"},
-                    "spec": {
-                        "accessModes": ["ReadWriteOnce"],
-                        "resources": {"requests": {"storage": "1Gi"}}
-                    }
-                }]
-            }
-        },
         "configmap": {
             "apiVersion": "v1",
             "kind": "ConfigMap",
@@ -96,6 +104,51 @@ def generate_yaml(resource_kind):
                     }
                 }]
             }
+        },
+        "job": {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {"name": "example-job"},
+            "spec": {
+                "template": {
+                    "metadata": {"name": "example"},
+                    "spec": {
+                        "containers": [{"name": "example-container", "image": "busybox", "command": ["echo", "Hello Kubernetes!"]}],
+                        "restartPolicy": "Never"
+                    }
+                }
+            }
+        },
+        "cronjob": {
+            "apiVersion": "batch/v1",
+            "kind": "CronJob",
+            "metadata": {"name": "example-cronjob"},
+            "spec": {
+                "schedule": "*/1 * * * *",
+                "jobTemplate": {
+                    "spec": {
+                        "template": {
+                            "spec": {
+                                "containers": [{"name": "example-container", "image": "busybox", "command": ["echo", "Hello from CronJob!"]}],
+                                "restartPolicy": "OnFailure"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "role": {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "Role",
+            "metadata": {"namespace": "default", "name": "example-role"},
+            "rules": [{"apiGroups": [""], "resources": ["pods"], "verbs": ["get", "list", "watch"]}]
+        },
+        "rolebinding": {
+            "apiVersion": "rbac.authorization.k8s.io/v1",
+            "kind": "RoleBinding",
+            "metadata": {"namespace": "default", "name": "example-rolebinding"},
+            "subjects": [{"kind": "User", "name": "example-user", "apiGroup": "rbac.authorization.k8s.io"}],
+            "roleRef": {"kind": "Role", "name": "example-role", "apiGroup": "rbac.authorization.k8s.io"}
         }
     }
 
@@ -113,6 +166,10 @@ def generate_yaml(resource_kind):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python k8s-resource.py <resource-kind>")
+        print("Supported resource kinds:")
+        print(", ".join(["pod", "deployment", "statefulset", "service", "persistentvolume", 
+                        "persistentvolumeclaim", "configmap", "secret", "ingress", 
+                        "job", "cronjob", "role", "rolebinding"]))
         sys.exit(1)
 
     resource_kind = sys.argv[1]
