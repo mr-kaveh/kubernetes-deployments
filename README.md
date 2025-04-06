@@ -1,1 +1,0 @@
-[![Deploy Kubernetes on Remote](https://github.com/mr-kaveh/kubernetes-deployments/actions/workflows/kubernetes-deploy-pull-request.yml/badge.svg)](https://github.com/mr-kaveh/kubernetes-deployments/actions/workflows/kubernetes-deploy-pull-request.yml)
