@@ -1,7 +1,5 @@
 
-write an example of ingress in kuberntes that works and i can test it
-
-Here's an example of a **Kubernetes Ingress** that you can test. It sets up an Ingress to route traffic to two different Services based on the URL path.
+We write an example of ingress in kuberntes that works and i can test it
 
 ### Steps:
 
