@@ -1,5 +1,5 @@
 
-We write an example of ingress in kuberntes that works and i can test it
+Here's an example of a **Kubernetes Ingress** that you can test. It sets up an Ingress to route traffic to two different Services based on the URL path.
 
 ### Steps:
 
@@ -20,109 +20,124 @@ then switch to the namespace:
     
 
 	
-		apiVersion: apps/v1
-		kind: Deployment
-		metadata:
-		  name: app-a
-		spec:
-		  replicas: 1
-		  selector:
-		    matchLabels:
-		      app: app-a
-		  template:
-		    metadata:
-		      labels:
-		        app: app-a
-		    spec:
-		      containers:
-		      - name: app-a
-		        image: hashicorp/http-echo
-		        args:
-		        - "-text=Hello from App A"
-		        ports:
-		        - containerPort: 5678
-		---
-		apiVersion: v1
-		kind: Service
-		metadata:
-		  name: app-a-service
-		spec:
-		  selector:
-		    app: app-a
-		  ports:
-		  - protocol: TCP
-		    port: 80
-		    targetPort: 5678
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld-one  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld-one
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld-one
+    spec:
+      containers:
+      - name: aks-helloworld-one
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Welcome to Azure Kubernetes Service (AKS)"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-helloworld-one  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: aks-helloworld-one
+```
 
 
 
 2.  **Deployment and Service for Application B:**
     
 
-		apiVersion: apps/v1
-		kind: Deployment
-		metadata:
-		  name: app-b
-		spec:
-		  replicas: 1
-		  selector:
-		    matchLabels:
-		      app: app-b
-		  template:
-		    metadata:
-		      labels:
-		        app: app-b
-		    spec:
-		      containers:
-		      - name: app-b
-		        image: hashicorp/http-echo
-		        args:
-		        - "-text=Hello from App B"
-		        ports:
-		        - containerPort: 5678
-		---
-		apiVersion: v1
-		kind: Service
-		metadata:
-		  name: app-b-service
-		spec:
-		  selector:
-		    app: app-b
-		  ports:
-		  - protocol: TCP
-		    port: 80
-		    targetPort: 5678
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld-two  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld-two
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld-two
+    spec:
+      containers:
+      - name: aks-helloworld-two
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "AKS Ingress Demo"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-helloworld-two  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: aks-helloworld-two
+```
 
 
 
 3.  **Ingress Resource:**
     
 
-		apiVersion: networking.k8s.io/v1
-		kind: Ingress
-		metadata:
-		  name: example-ingress
-		  annotations:
-		    nginx.ingress.kubernetes.io/rewrite-target: /
-		spec:
-		  rules:
-		  - host: "myapp.local"
-		    http:
-		      paths:
-		      - path: /app-a
-		        pathType: Prefix
-		        backend:
-		          service:
-		            name: app-a-service
-		            port:
-		              number: 80
-		      - path: /app-b
-		        pathType: Prefix
-		        backend:
-		          service:
-		            name: app-b-service
-		            port:
-		              number: 80
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /hello-world-one(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: aks-helloworld-one
+            port:
+              number: 80
+      - path: /hello-world-two(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: aks-helloworld-two
+            port:
+              number: 80
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: aks-helloworld-one
+            port:
+              number: 80
+```
               
 
 ### Install MetalLB
