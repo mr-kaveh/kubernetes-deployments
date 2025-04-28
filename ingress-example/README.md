@@ -1,4 +1,4 @@
-
+source: https://spacelift.io/blog/kubernetes-ingress
 Here's an example of a **Kubernetes Ingress** that you can test. It sets up an Ingress to route traffic to two different Services based on the URL path.
 
 ### Steps:
