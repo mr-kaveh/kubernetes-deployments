@@ -10,6 +10,26 @@ Here's an example of a **Kubernetes Ingress** that you can test. It sets up an I
 then switch to the namespace:
 
 	kubectl config set-context --current --namespace=ingress-nginx
+
+ ### Install MetalLB
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+
+### Configure MetalLB
+
+	apiVersion: metallb.io/v1beta1
+	kind: IPAddressPool
+	metadata:
+	  name: my-ip-pool
+	  namespace: metallb-system
+	spec:
+	  addresses:
+	  - 192.168.1.100-192.168.1.110
+	---
+	apiVersion: metallb.io/v1beta1
+	kind: L2Advertisement
+	metadata:
+	  name: l2-advertisement
+	  namespace: metallb-system
     
 2.  Use the following YAML configuration for the Ingress resource.
     
@@ -140,25 +160,7 @@ spec:
 ```
               
 
-### Install MetalLB
-	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 
-### Configure MetalLB
-
-	apiVersion: metallb.io/v1beta1
-	kind: IPAddressPool
-	metadata:
-	  name: my-ip-pool
-	  namespace: metallb-system
-	spec:
-	  addresses:
-	  - 192.168.1.100-192.168.1.110
-	---
-	apiVersion: metallb.io/v1beta1
-	kind: L2Advertisement
-	metadata:
-	  name: l2-advertisement
-	  namespace: metallb-system
 
 
 ### How It Works:
