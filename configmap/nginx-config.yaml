@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  DATABASE_URL: "mysql://localhost:3306"
+  APP_ENV: "production"
+  custom.conf: |
+    server {
+      listen 80;
+      server_name myapp.local;
+      location / {
+        root /usr/share/nginx/html;
+      }
+    }
