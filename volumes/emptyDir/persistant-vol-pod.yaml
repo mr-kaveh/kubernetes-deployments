@@ -1,0 +1,41 @@
+# Used for persistent storage that remains intact even if a pod is deleted.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-test
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ["sh", "-c", "echo 'Hello, Persistent Volume!' > /mnt/test.txt && sleep 3600"]
+      volumeMounts:
+        - mountPath: /mnt
+          name: myvolume
+  volumes:
+    - name: myvolume
+      persistentVolumeClaim:
+        claimName: pvc-test

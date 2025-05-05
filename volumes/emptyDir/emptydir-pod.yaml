@@ -1,0 +1,16 @@
+# Data is stored as long as the pod is running but disappears when the pod stops.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-test
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ["sh", "-c", "echo 'Hello, emptyDir!' > /data/test.txt && sleep 3600"]
+      volumeMounts:
+        - mountPath: /data
+          name: myvolume
+  volumes:
+    - name: myvolume
+      emptyDir: {}
