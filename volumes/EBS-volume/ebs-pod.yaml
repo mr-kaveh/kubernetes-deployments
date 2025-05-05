@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-ebs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: "287483229732374364238"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aws-ebs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-ebs-pod
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ["sh", "-c", "echo 'Hello, EBS!' > /data/test.txt && sleep 3600"]
+      volumeMounts:
+        - mountPath: /data
+          name: ebs-volume
+  volumes:
+    - name: ebs-volume
+      persistentVolumeClaim:
+        claimName: aws-ebs-pvc
